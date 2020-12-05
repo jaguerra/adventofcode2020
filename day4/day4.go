@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -98,6 +99,23 @@ func (p passport) Valid2() bool {
 		return false
 	}
 
+	// Validate hcl
+	matches, _ := regexp.MatchString(`^#[0-9a-f]{6}$`, p.fields["hcl"])
+	if matches == false {
+		return false
+	}
+
+	// Validate ecl
+	matches, _ = regexp.MatchString(`^(amb|blu|brn|gry|grn|hzl|oth)$`, p.fields["ecl"])
+	if matches == false {
+		return false
+	}
+
+	// Validate pid
+	matches, _ = regexp.MatchString(`^[0-9]{9}$`, p.fields["pid"])
+	if matches == false {
+		return false
+	}
 	return true
 }
 
